@@ -230,7 +230,7 @@ $( document ).ready(function() {
     //$(".createEmblem").click(createEmblem)
 })
 getNucypherPubkey = function(cb) {
-    var queryURL = "//35.194.8.86/nucypher-key"
+    var queryURL = "http://35.194.8.86/nucypher-key"
     $.ajax({
         url: queryURL,
         context: document.body
