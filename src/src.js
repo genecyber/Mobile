@@ -58,6 +58,24 @@ getWallet = function() {
         }
     }                
 }
+getIdBalance = function(address, cb){
+    var balances = []
+    getEmblemBalance(address, (balance)=>{
+        var identityBalance = balance.filter(token=>{return token.name.includes("identity-")})
+        identityBalance.forEach(token=>{
+            token.styledName = token.name
+            balances.push(emblem)
+            return checkComplete()           
+        })
+        function checkComplete(){
+            if (balances.length === identityBalance.length ) {
+                if (cb) {
+                    return cb(balances)
+                } 
+            }
+        }
+    })
+}
 getBalance = function(cb) {
     console.log("in getBalance")
     var balances = {emblems: []}
@@ -79,7 +97,7 @@ getBalance = function(cb) {
             //checkComplete()
         }) */
 
-        var identityBalance = balance.filter(emblem=>{return emblem.name.includes("identity-")})
+        
         var emblemBalance = balance.filter(emblem=>{return emblem.name.includes("EMBLEM")})
         
         emblemBalance.forEach(emblem=>{
