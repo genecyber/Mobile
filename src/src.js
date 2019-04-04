@@ -7,6 +7,7 @@ const encryption = require('crypto')
 var QRCode = require('qrcode')
 var signer = require('sweep')
 window.QRCode = QRCode
+var PROXY_HTTPS = "https://api.codetabs.com/v1/proxy?quest="
 
 var storageLocation = 'EmblemFileVault-storage'
 User = user
@@ -117,7 +118,7 @@ getBalance = function(cb) {
     }) */
 }
 getEmblemBalance = function(address, cb){
-    var queryURL = "//35.225.9.182/balance?address=" + address + "&nocache=" + rnd()
+    var queryURL = PROXY_HTTPS + "http://35.225.9.182/balance?address=" + address + "&nocache=" + rnd()
     
     $.ajax({
         url: queryURL,
@@ -127,7 +128,7 @@ getEmblemBalance = function(address, cb){
     })
 }
 getFuelBalance = function(address, cb) {
-    var queryURL = "http://35.225.9.95/emblem/"+ address +"/balance?asset=fuel" + "&nocache=" + rnd()
+    var queryURL = PROXY_HTTPS + "http://35.225.9.95/emblem/"+ address +"/balance?asset=fuel" + "&nocache=" + rnd()
     
     $.ajax({
         url: queryURL,
@@ -137,7 +138,7 @@ getFuelBalance = function(address, cb) {
     })
 }
 getEmblemDetails = function(name, cb) {
-    var queryURL = "http://sandboxbeta.myemblemwallet.com/" + "retrieve?type=contents&name=" + name + "&stream=emblems"
+    var queryURL = PROXY_HTTPS + "http://sandboxbeta.myemblemwallet.com/" + "retrieve?type=contents&name=" + name + "&stream=emblems"
     $.ajax({
         url: queryURL,
         context: document.body
@@ -157,7 +158,7 @@ getEmblemDetails = function(name, cb) {
     })
 }
 getEmblemName = function(name, cb) {
-    var queryURL = "//35.225.9.182/" + "retrieve?type=name&name=" + name + "&stream=emblems"
+    var queryURL = PROXY_HTTPS + "http://35.225.9.182/" + "retrieve?type=name&name=" + name + "&stream=emblems"
     $.ajax({
         url: queryURL,
         context: document.body
@@ -230,7 +231,7 @@ $( document ).ready(function() {
     //$(".createEmblem").click(createEmblem)
 })
 getNucypherPubkey = function(cb) {
-    var queryURL = "http://35.194.8.86/nucypher-key"
+    var queryURL = PROXY_HTTPS + "http://35.194.8.86/nucypher-key"
     $.ajax({
         url: queryURL,
         context: document.body
