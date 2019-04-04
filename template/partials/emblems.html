@@ -1,0 +1,23 @@
+<ul class="list w-list-unstyled animated slideInUp faster">
+    {{#each emblems}}
+        <li class="list-item">
+            <action onclick='loadEmblemDetails("{{this.name}}")' class="link-block-2 w-inline-block">
+                <div class="columns-7 w-row">
+                    <div class="w-col w-col-9 w-col-small-9 w-col-tiny-9">
+                        <div class="text-block-9">{{this.styledName}}</div>
+                    </div>
+                    <div class="w-col w-col-3 w-col-small-3 w-col-tiny-3">
+                        <div class="text-block-10">$0.00</div>
+                    </div>
+                </div>
+            </actiononclick>
+        </li>        
+    {{/each}}        
+</ul>
+<script>
+    var emblems = JSON.parse('{{{serialized}}}')
+    function loadEmblemDetails(name){
+        var emblem = emblems.filter(emblem=> {return emblem.name === name})[0]
+        renderHandlebarsTemplate('pages/emblem-detail.html', 'content', emblem)
+    }
+</script>

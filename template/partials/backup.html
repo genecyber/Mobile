@@ -1,0 +1,77 @@
+<label for="name" class="field-label-2 animated fadeInRight fast">{{#if context.restore}}Restore{{else}}Backup{{/if}} Password</label>
+<input type="password" style="color: white;" id="name" name="name" data-name="Name" maxlength="256" autofocus="true" class="text-field w-input animated fadeIn backupPassword">
+{{#if context.backup }}
+<a class="button w-button backupButton">Backup</a>
+{{else}}
+    <input type="file" id="fileinput" class="w-input upload-input" />
+{{/if}}
+<script>
+    showModal()
+</script>
+
+{{#if context.backup }}
+    <script>
+        $(".backupButton").click(()=>{
+            if ($(".backupPassword").val()) {
+                window.ignore_click_override = true
+                downloadObjectAsJson($(".backupPassword").val())
+                window.ignore_click_override = false
+               hideModal()
+            } else {
+                alert("Please type a password to protect your backup")
+            }        
+        })
+        function downloadObjectAsJson(password){
+            var encrypted = encrypt(password || $(".backupPassword").val())
+            var dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(encrypted));
+            var downloadAnchorNode = document.createElement('a');
+            downloadAnchorNode.setAttribute("href",     dataStr);
+            downloadAnchorNode.setAttribute("download", "EmblemVault-backup" + ".json");
+            document.body.appendChild(downloadAnchorNode); // required for firefox
+            window.ignore_click_override = true
+            downloadAnchorNode.click()
+            window.ignore_click_override = false
+            downloadAnchorNode.remove();
+        }
+    </script>
+{{else}}
+    <script>
+        document.getElementById('fileinput').addEventListener('change', readSingleFile, false)
+        function readSingleFile(evt) {
+            var password = $(".backupPassword").val()
+            if (!password) {
+                $("#fileinput").val("")
+                return alert("You need a password to restore a backup")
+            }
+            //Retrieve the first (and only!) File from the FileList object
+            var f = evt.target.files[0]; 
+
+            if (f) {
+            var r = new FileReader();
+            r.onload = function(e) { 
+                var contents = e.target.result
+                try {
+                    var k = decrypt(JSON.parse(contents), password)
+                    if (k) {
+                        keys = k
+                        saveLocalState()
+                        location.reload()
+                    }
+                } catch(err){
+                    $("#fileinput").val("")
+                    console.log("Error", err)
+                    alert("Error Reading File", err)
+                    return $(".modal").hide()
+                }
+            }
+            r.readAsText(f)
+            } else { 
+                alert("Failed to load file")
+            }
+        }
+        function saveLocalState(){
+            localStorage.setItem(storageLocation, JSON.stringify(keys))
+            return hideModal()
+        }
+    </script>
+{{/if}}

@@ -1,0 +1,31 @@
+
+
+<div class="section-10">
+    <div>&nbsp;</div>
+</div>
+<div class="section-10">
+    <div class="columns-7 w-row">
+        <div  style="color:white" class="w-col w-col-3 w-col-small-3 w-col-tiny-3">
+            <!-- <select id="field" name="field" class="select-field w-select"><option value="emblem">Emblem Address...</option></select> -->
+            Emblem
+        </div>
+        <div class="w-col w-col-9 w-col-small-9 w-col-tiny-9">
+            <emblemaddress class="emblem-address" style="color:white"></emblemaddress>
+        </div>
+    </div>
+    <emblems class="emblems"></emblems>
+</div>
+<script type="text/javascript">
+console.log("Run JS")
+    setTimeout(function() {
+        $('emblemaddress').html("<div>" + keys[0].address + "</div>")
+    }, 300)
+    console.log("starting balance check")
+    getBalance(balances=>{
+        console.log("back from check")
+        //balances = {Serialized: JSON.stringify(balances), balances: balances}
+        balances.serialized = JSON.stringify(balances.emblems)
+        renderHandlebarsTemplate('partials/emblems.html', 'emblems', balances)
+    })
+    
+</script>

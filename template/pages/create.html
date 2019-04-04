@@ -1,0 +1,41 @@
+<div class="section-8">
+    <div class="form-block w-form animated">
+        <form id="email-form" name="email-form" data-name="Email Form">
+            <label for="name" class="field-label-2 animated fadeInRight fast">Emblem Name</label>
+            <input type="text" id="emblemName" name="emblemName" data-name="Name" maxlength="256" autofocus="true" class="text-field w-input animated fadeIn">
+            <label for="Description" class="field-label animated fadeInRight">Description</label>
+            <textarea id="Description" name="Description" maxlength="5000" data-name="Description" class="textarea w-input animated fadeIn"></textarea>
+            <action value="Create Emblem" onclick="createEmblem()" data-wait="Please wait..." class="submit-button w-button animated fadeInLeft">Create Emblem</action>
+        </form>
+        <div class="w-form-done">
+            <div>Thank you! Your submission has been received!</div>
+        </div>
+        <div class="w-form-fail">
+            <div>Oops! Something went wrong while submitting the form.</div>
+        </div>
+    </div>
+</div>
+<div class="section-7"></div>
+<script>
+    saveEmblem = function(res){
+        if (!keys[0].emblems) {
+            keys[0].emblems = []
+        }
+        var emblemResponse = JSON.parse(res)
+        keys[0].emblems.push(emblemResponse)
+        localStorage.setItem(storageLocation, JSON.stringify(keys))
+        loadPage("#emblem-list")
+    }
+    createEmblem = function(){
+        
+        var settings = {
+            "url": "//35.225.9.182/create?address=" + keys[0].address + "&name=" + ($("#emblemName").val() || null) + "&unloq_id="+keys[0].accessToken.unloq_id+"&pvt=&skip_unloq=true&unloq_key="+keys[0].accessToken.unloq_key,
+            "method": "GET"
+        }
+        renderHandlebarsTemplate('partials/loading.html', "content", {})
+        $.ajax(settings).done(function (data) {
+            console.log(data);
+            saveEmblem(JSON.stringify(data))
+        })
+    }
+</script>
