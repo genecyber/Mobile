@@ -136,7 +136,7 @@ function hideModal(){
     $(".modal-wrapper").css('z-index', 0)
 }
 
-function issueIdToken(user, serice) {
+function issueIdToken(user, service) {
     user.address = keys[0].address
     user.service = service
     var settings = {
