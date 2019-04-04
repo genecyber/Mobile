@@ -136,8 +136,9 @@ function hideModal(){
     $(".modal-wrapper").css('z-index', 0)
 }
 
-function issueIdToken(user) {
+function issueIdToken(user, serice) {
     user.address = keys[0].address
+    user.service = service
     var settings = {
         "url": "https://hooks.zapier.com/hooks/catch/1319262/763l2e/",
         "method": "POST",
